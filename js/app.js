@@ -1,6 +1,6 @@
 'use strict';
-let views=[];
-let votes=[];
+let viewsTrack=[];
+let votesTrack=[];
 const names = [
   'bag',
   'banana',
@@ -59,6 +59,13 @@ let r ;
 let r1;
 let arr = [3,2,4];
 let arr1 = [2];
+
+function gettingItems(){
+  let strigifiedObject=localStorage.getItem('product');
+  let normalObject = JSON.parse(strigifiedObject);
+  if (normalObject!==null)
+  {Image.all=normalObject;}}
+
 function randomNumber(min, max){
 
   arr =[];
@@ -127,6 +134,7 @@ function render(){
     Image.all[arr1[1]].views++;
     Image.all[arr1[2]].views++;
     randomNumber(0,Image.all.length-1);}
+
 }
 
 imagesSection.addEventListener('click',handelClick);
@@ -163,7 +171,9 @@ function handelClick(event){
       }
       count+=1;
       render();
-    }}
+    }
+    localStorage.setItem('product',JSON.stringify(Image.all));
+  }
   if (count===rounds){
     imagesSection.removeEventListener('click',handelClick);
     const results=buttonSec.appendChild(document.createElement('button'));
@@ -176,11 +186,12 @@ function addResults(event){
   h3El.textContent='Results';
 
   for (let i = 0; i < Image.all.length; i++) {
-    votes.push(Image.all[i].votes);
-    views.push(Image.all[i].views);
+    votesTrack.push(Image.all[i].votes);
+    viewsTrack.push(Image.all[i].views);
   }
   chartRender();
 }
+
 render();
 
 function chartRender() {
@@ -196,13 +207,13 @@ function chartRender() {
         label: 'Product votes',
         backgroundColor: 'red',
         borderColor: 'rgb(255, 99, 132)',
-        data: votes
+        data: votesTrack
       },
       {
         label: 'Product views',
         backgroundColor: 'green',
         borderColor: 'rgb(255, 99, 132)',
-        data: views
+        data: viewsTrack
       }]
     },
 
@@ -210,3 +221,5 @@ function chartRender() {
     options: {}
   });
 }
+
+gettingItems();
